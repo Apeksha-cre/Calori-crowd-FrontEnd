@@ -1,27 +1,32 @@
-import { ImageBackground,View } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
+import img from '../assets/background_image.jpg'
 import React from 'react'
-import img from '../assets/homepage_background_image.jpg'
-import Btn from './Btn'
-import { lightorange } from './Constants'
 
+const Home  = ({route}) => {
 
-
-export default function Home(props) {
+const user=route.params.user;
   return (
     <View>
-      <ImageBackground source={img} style={{ height: '100%'}} resizeMode='stretch'>
-        <View style={{ paddingTop: 430 }}>
-          <Btn bgcolor={lightorange} textcolor='black' btnLable='Login' btnwidth='80%' press={()=>props.navigation.navigate("Login")}/>
-        </View>
-
-        <View style={{ paddingTop: 10 }}>
-          <Btn bgcolor={lightorange} textcolor='black' btnLable='SignUp' btnwidth='80%' press={()=>props.navigation.navigate("SignUp")}/>
-        </View>
-        
+    <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>
+    <View>
+      <Text style={styles.text}>Hi, {user.user.name} </Text>
+      </View>
       </ImageBackground>
-
     </View>
   )
 }
 
-//const styles = StyleSheet.create({})
+export default Home 
+const styles = StyleSheet.create({
+    text:{
+        fontSize:20,
+        fontStyle:'normal',
+        fontWeight:'bold',
+        color:'#E36A30',
+        paddingLeft:32,
+        alignSelf:'flex-start',
+        marginTop:'6%',
+        marginLeft:"13%",
+        marginBottom:60
+    }
+})

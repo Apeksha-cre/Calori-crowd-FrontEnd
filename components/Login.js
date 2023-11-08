@@ -1,16 +1,40 @@
 import React from 'react'
-import{View, Text, ImageBackground, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import{View, Text, ImageBackground, StyleSheet, TextInput, TouchableOpacity, Button, Alert} from 'react-native';
 import img from '../assets/background_image.jpg'
 import{ useState } from 'react';
 import Btn from './Btn'
 import { lightorange } from './Constants'
 
-const Login = () => 
+
+ 
+const Login = ({navigation}) => 
 {
-    const [state,setState] = useState({
-        email: '',
-        password: '',
-        })
+    const url='http://192.168.56.1:8080/login';
+    const[email,setEmail]=useState("");
+   const[password,setPassword]=useState("");
+   const[responseData,setResponseData]=useState([])
+   const loginUser={email,password}
+
+       const handlePress=()=>{
+        console.log("in hadlepress function");
+        fetch(url,{
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body:JSON.stringify(loginUser)
+        }).then(res=>res.json()).then(User=>{setResponseData(User)}).then(console.log(responseData))
+        .catch(err=>console.log(err));
+
+        if(responseData.user==null)
+        {
+            Alert.alert("USER NOT REGISTERD")
+        }
+        else{
+            navigation.navigate('Home',{user:responseData});
+        }
+        
+
+        console.log(" still in hadlepress function"); 
+    }
 
   return (
    <View>
@@ -21,24 +45,28 @@ const Login = () =>
 
     <Text style={{color:'#000000', fontSize:22, fontWeight:'bold', paddingLeft:32}}> Email</Text>
     <View style={styles.inputview}>
-     <TextInput style={{height:50,color:'#000000'}} placeholder='Enter your Email' placeholderTextColor={"#000000"} onChangeText={text => setState({email:text})}/>  
+     <TextInput style={{height:50,color:'#000000'}} placeholder='Enter your Email' value={email}
+     placeholderTextColor={"#000000"} onChangeText={setEmail}/>  
     </View>
 
     <Text style={{color:'#000000', fontSize:22, fontWeight:'bold', paddingLeft:32}}> Password</Text>
     <View style={styles.inputview}>
-     <TextInput style={{height:50,color:'#000000'}} placeholder='Enter your Password' placeholderTextColor={"#000000"} secureTextEntry={true} onChangeText={text => setState({password:text})}/>  
+     <TextInput style={{height:50,color:'#000000'}} placeholder='Enter your Password' 
+     placeholderTextColor={"#000000"} secureTextEntry={true} value={password}
+     onChangeText={setPassword}/>  
     </View>
 
-    <TouchableOpacity>
+<TouchableOpacity>
 <Text style={{alignSelf:'flex-end',paddingRight:'2%', fontWeight:'bold', fontSize:18 }}>Forgot Password?</Text>
 </TouchableOpacity>
 
 <View style={{marginTop:'10%'}}>
-<Btn bgcolor={lightorange} textcolor='black' btnLable='LogIn'btnwidth='50%' press={()=>props.navigation.navigate("SignUp")}/>
+<Btn bgcolor={lightorange} textcolor='black' btnLable='LogIn'btnwidth='50%' 
+    press={handlePress}/>
+
 </View>
-    
-    </ImageBackground>
-   </View>
+</ImageBackground>
+</View>
   )
 }
 
@@ -65,6 +93,7 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         paddingLeft:32
     }
+    
 })
 
 export default Login
