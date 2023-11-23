@@ -12,29 +12,53 @@ const Login = ({navigation}) =>
     const url='http://192.168.56.1:8080/login';
     const[email,setEmail]=useState("");
    const[password,setPassword]=useState("");
-   const[responseData,setResponseData]=useState([])
-   const loginUser={email,password}
+   const loginUser = { email, password };
+   //const[responseData,setResponseData]=useState([])
+   //const loginUser={email,password}
+   //console.log(loginUser)
 
-       const handlePress=()=>{
-        console.log("in hadlepress function");
-        fetch(url,{
+    //    const handlePress=()=>{
+    //     console.log("in hadlepress function");
+    //     fetch(url,{
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body:JSON.stringify(loginUser)
+    //     }).then(res=>res.json())
+    //     .then(User=>{setResponseData(User); 
+    //         if(responseData.user==null)
+    //     {
+    //         Alert.alert("USER NOT REGISTERD")
+    //     }
+    //     else{
+    //         navigation.navigate('Home',{user:responseData});
+    //     }
+    //     console.log(" still in hadlepress function")})
+    //     .catch(err=>console.log(err));
+    // };
+
+    const handlePress = async () => {
+        console.log('In handlePress function');
+    
+        try {
+          const response = await fetch(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body:JSON.stringify(loginUser)
-        }).then(res=>res.json()).then(User=>{setResponseData(User)}).then(console.log(responseData))
-        .catch(err=>console.log(err));
-
-        if(responseData.user==null)
-        {
-            Alert.alert("USER NOT REGISTERD")
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginUser),
+          });
+    
+        const user = await response.json();
+          
+          if (user.user === null) {
+            Alert.alert('USER NOT REGISTERED');
+          } else {
+            navigation.navigate('Home', { user });
+          }
+    
+          console.log('Still in handlePress function');
+        } catch (error) {
+          console.log('Error:', error);
         }
-        else{
-            navigation.navigate('Home',{user:responseData});
-        }
-        
-
-        console.log(" still in hadlepress function"); 
-    }
+      };
 
   return (
    <View>

@@ -7,6 +7,7 @@ import WelcomeScreen from './components/WelcomeScreen';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
+import SearchByName from './components/SearchByName';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ function App() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name='SearchByName' component={SearchByName}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
