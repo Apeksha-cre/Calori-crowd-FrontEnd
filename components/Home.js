@@ -1,7 +1,11 @@
-import { StyleSheet, Text, View, ImageBackground} from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity} from 'react-native'
 import { Svg, Circle, Text as SvgText } from 'react-native-svg';
-
-import{ useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import Share from 'react-native-share';
+import ViewShot  from 'react-native-view-shot';
+import{captureRef} from 'react-native-view-shot';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import{ useEffect, useState, useRef } from 'react';
 import img from '../assets/background_image.jpg'
 import React from 'react'
 import { lightorange } from './Constants'
@@ -14,6 +18,7 @@ const Home  = ({route,navigation}) => {
   //const user=route.params.user;
   const goalCalorie=5000;
   const chartRadius = 120;
+  const viewShotRef = useRef();
  
   const chartCircumference = 2* Math.PI * chartRadius;
 
@@ -26,11 +31,6 @@ const Home  = ({route,navigation}) => {
       .then(userCalorie=>setCalorieConsumed(userCalorie.totalCalorie))
     }
    
-    // useEffect(() => {
-    //   // Fetch data when the calorieConsumed state changes
-    //   console.log("useeffect in displaycalorie")
-    //   displayCalorie();
-    // }, [calorieConsumed]);
 
     useFocusEffect(
       React.useCallback(() => {
@@ -39,14 +39,31 @@ const Home  = ({route,navigation}) => {
       }, [])
     );
 
+    const onSharePress = async () => {
+      try {
+        console.log('Before captureRef');
+        const uri = await captureRef(viewShotRef, {
+          format: 'png',
+          quality: 0.8,
+          result: 'tmpfile', // 'tmpfile', 'base64', or 'data-uri'
+        });
+        console.log('After captureRef:', uri);
+        await Share.open({ url: uri ,message:"Hello connections!! This is my today's Score"});
+        // Implement your share functionality using the captured URI
+      } catch (error) {
+        console.log('Error during captureRef:', error);
+      }
+    };
+
   return (
     <View>
+    
     <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>
       <View>
       <Text style={styles.text}>Hi, {user.user.name} </Text>
       </View>
      
-
+      <ViewShot  ref={(ref) => (viewShotRef.current = ref)} options={{ format: 'png', quality: 0.8 }}>
       <View style={styles.container}>
       <Svg width={chartRadius * 2 } height={chartRadius * 2} >
       
@@ -84,7 +101,18 @@ const Home  = ({route,navigation}) => {
           {`${calorieConsumed} / ${goalCalorie}`}
         </SvgText>
       </Svg>
+
     </View>
+    </ViewShot>
+
+
+    <TouchableOpacity
+          style={{ position: 'absolute', top: 0, 
+          right: 0, padding: 16 }} onPress={onSharePress}>
+          <Icon name="share-circle" color={lightorange} size={45}></Icon>
+        </TouchableOpacity>
+
+
     <View style={{marginTop:'22%'}}>
     <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={()=>navigation.navigate("Login")}/>
     </View>
@@ -93,6 +121,7 @@ const Home  = ({route,navigation}) => {
     </View>
     
       </ImageBackground>
+      
     </View>
   )
 }
