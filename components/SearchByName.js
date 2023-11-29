@@ -5,13 +5,15 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 import Btn from './Btn'
 import { lightorange } from './Constants'
 
-const SearchByName = ({navigation}) => {
+const SearchByName = ({route,navigation}) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [quantity,setQuantity]=useState();
   const [isListVisible, setIsListVisible] = useState(true);
+  const userId = route.params?.userId;
+  console.log("useid in searchbyname",userId);
   //const [requestBody,setRequestBody]=useState([]);
 
  
@@ -44,7 +46,8 @@ const SearchByName = ({navigation}) => {
       const requestBody = selectedItems.map(item => ({ 
           calorie: item.calorie, 
           foodId: item.foodId,
-          foodName: item.foodName, 
+          foodName: item.foodName,
+          userId:userId, 
           foodQuantity: quantity, 
           totalCalorie: quantity*item.calorie}));
       console.log("selected items in request body",requestBody)

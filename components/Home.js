@@ -15,22 +15,46 @@ const Home  = ({route,navigation}) => {
 
   const[calorieConsumed,setCalorieConsumed]=useState(null);
   const user = route.params?.user || { user: { name:"" } };
+  const userId=user.user.userId;
   //const user=route.params.user;
+ // const[userId,setUserId]=useState();
+  // setUserId(user.user.userId);
+  // console.log(userId);
+ 
+ // console.log("in home : .....................",userId);
   const goalCalorie=5000;
   const chartRadius = 120;
   const viewShotRef = useRef();
  
   const chartCircumference = 2* Math.PI * chartRadius;
 
-  const displayCalorie=()=>{
-    fetch("http://192.168.56.1:8080/calorie",{
+  // const displayCalorie=(userId)=>{
+  //   fetch(`http://192.168.56.1:8080/calorie/${userId}`,{
+  //         method: 'GET',
+  //         headers: {'Content-Type': 'application/json'},
+  //         body:JSON.stringify()
+  //     }).then(res=>res.json())
+  //     .then(userCalorie=>setCalorieConsumed(userCalorie.totalCalorie))
+  //     console.log("after api call calorie of uesr is ",userCalorie)
+  //   }
+
+    const displayCalorie = async () => {
+      const cuserId=user.user.userId;
+      console.log("in diaplay..",cuserId)
+      try {
+        const response = await fetch(`http://192.168.56.1:8080/calorie/${cuserId}`, {
           method: 'GET',
-          headers: {'Content-Type': 'application/json'},
-          body:JSON.stringify()
-      }).then(res=>res.json())
-      .then(userCalorie=>setCalorieConsumed(userCalorie.totalCalorie))
-    }
-   
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(),
+        });
+  
+      const userCalorie = await response.json();
+      console.log("response for calorie api",userCalorie)
+      setCalorieConsumed(userCalorie.totalCalorie)
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    };
 
     useFocusEffect(
       React.useCallback(() => {
@@ -117,7 +141,7 @@ const Home  = ({route,navigation}) => {
     <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={()=>navigation.navigate("Login")}/>
     </View>
     <View style={{marginTop:'4%'}}>
-    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Name' btnwidth='80%' press={() => navigation.navigate('SearchByName')}/>
+    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Name' btnwidth='80%' press={() => navigation.navigate('SearchByName',{ userId })}/>
     </View>
     
       </ImageBackground>
