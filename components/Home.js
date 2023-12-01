@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity,Alert} from 'react-native'
 import { Svg, Circle, Text as SvgText } from 'react-native-svg';
 import { useFocusEffect } from '@react-navigation/native';
 import Share from 'react-native-share';
@@ -11,11 +11,13 @@ import React from 'react'
 import { lightorange } from './Constants'
 import Btn from './Btn';
 
+
 const Home  = ({route,navigation}) => {
 
   const[calorieConsumed,setCalorieConsumed]=useState(null);
   const user = route.params?.user || { user: { name:"" } };
   const userId=user.user.userId;
+ // const bs = React.useRef(null)
   //const user=route.params.user;
  // const[userId,setUserId]=useState();
   // setUserId(user.user.userId);
@@ -25,8 +27,9 @@ const Home  = ({route,navigation}) => {
   const goalCalorie=5000;
   const chartRadius = 120;
   const viewShotRef = useRef();
- 
+   
   const chartCircumference = 2* Math.PI * chartRadius;
+  
 
   // const displayCalorie=(userId)=>{
   //   fetch(`http://192.168.56.1:8080/calorie/${userId}`,{
@@ -79,10 +82,13 @@ const Home  = ({route,navigation}) => {
       }
     };
 
+   
+  
+
   return (
     <View>
-    
     <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>
+   
       <View>
       <Text style={styles.text}>Hi, {user.user.name} </Text>
       </View>
@@ -138,14 +144,15 @@ const Home  = ({route,navigation}) => {
 
 
     <View style={{marginTop:'22%'}}>
-    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={()=>navigation.navigate("Login")}/>
+    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage')}/>
+    
     </View>
     <View style={{marginTop:'4%'}}>
     <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Name' btnwidth='80%' press={() => navigation.navigate('SearchByName',{ userId })}/>
     </View>
-    
+   
       </ImageBackground>
-      
+     
     </View>
   )
 }
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
         color:'#E36A30',
         paddingLeft:32,
         alignSelf:'flex-start',
-        marginTop:'6%',
+        marginTop:'7%',
         marginLeft:"13%",
         marginBottom:60
     },
