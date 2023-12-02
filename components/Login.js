@@ -63,6 +63,9 @@ const Login = ({navigation}) =>
   return (
    <View>
     <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>
+    <View style={{marginLeft:'21%',marginTop:'9%'}} >
+      <Text style={{fontSize:22, fontWeight:'bold', color:'#E36A30'}}>Hello!!</Text>
+    </View>
     <View>
     <Text style={styles.text}>Login</Text>
     </View>
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
         color:'#000000',
         paddingLeft:32,
         alignSelf:'flex-start',
-        marginTop:'38%',
+        marginTop:'4%',
         marginBottom:60
     },
     inputview:{

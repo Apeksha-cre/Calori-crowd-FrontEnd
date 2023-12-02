@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from 'react'
 import { View, Text, ImageBackground, TextInput, Button, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import img from '../assets/background_image.jpg'
@@ -9,11 +12,24 @@ const SearchByName = ({ route, navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState('1');
   const [isListVisible, setIsListVisible] = useState(true);
   const userId = route.params?.userId;
+ const itemName= route.params?.item;
   console.log("useid in searchbyname", userId);
   //const [requestBody,setRequestBody]=useState([]);
+  
+  useEffect(()=>{
+    if(itemName!="")
+    {
+
+      console.log("use effect call")
+      //setSearchText(itemName);
+     fetchItems(itemName);
+    }
+
+  },[searchText]);
+ 
 
 
   console.log("search text", searchText);
@@ -23,7 +39,8 @@ const SearchByName = ({ route, navigation }) => {
 
       // Make API call to get the list of items based on the text
       // Example:
-
+      console.log("in fetch")
+      console.log(foodName)
       const response = await fetch(`http://192.168.56.1:8080/food?foodName=${foodName}`);
       const data = await response.json();
       // Update the setSearchResults state with the response
@@ -31,7 +48,10 @@ const SearchByName = ({ route, navigation }) => {
       // {
       //   console.log("empty");
       // }
+     
+      setIsListVisible(true);
       setSearchResults(data);
+
     } catch (error) {
       console.error('Error fetching items:', error);
     }
@@ -39,6 +59,11 @@ const SearchByName = ({ route, navigation }) => {
 
   const handleAdd = async () => {
     try {
+      if (selectedItems.length === 0) {
+        // Show an alert that no item is selected
+        alert('Please select at least one item from the list.');
+        return;
+      }
       // Make sure selectedItems is an array of the selected items
       //await fetchItems(searchText);
       console.log("selected items in handleAdd", selectedItems);
@@ -81,6 +106,7 @@ const SearchByName = ({ route, navigation }) => {
 
   const handleItemPress = (item) => {
     // Check if the item is already selected
+    console.log("item in handlepress",item);
     const isSelected = selectedItems.some((selectedItem) => selectedItem.foodId === item.foodId);
 
     if (isSelected) {
@@ -96,12 +122,23 @@ const SearchByName = ({ route, navigation }) => {
     setIsListVisible(false);
   };
 
+    const ListHeader=()=>{
+      return(
+      <View>
+        <Text style={{fontSize:15,color:'#000000'}}>
+          Select items:
+        </Text>
+      </View>
+    )}
 
 
   return (
     <View>
       <ImageBackground source={img} style={{ height: '100%', width: '100%' }} resizeMode='stretch'>
-        <View style={{ paddingTop: '42%' }}>
+      <View style={{marginLeft:'21%',marginTop:'9%'}} >
+        <Text style={{fontSize:22, fontWeight:'bold', color:'#E36A30'}}>CalorieCrowd</Text>
+      </View>
+        <View style={{ paddingTop: '38%' }}>
           <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }} >Search for items:</Text>
           <View style={styles.searchContainer}>
             <TextInput
@@ -115,10 +152,40 @@ const SearchByName = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
 
-          {isListVisible && (
-            <FlatList
+          
+          <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }}>Quantity:</Text>
+          
+          {/* <TextInput
+            style={styles.QuantityInputview}
+            onChangeText={text => setQuantity(text)}
+            value={quantity}
+          /> */}
+          {/* <Btn bgcolor={lightorange} textcolor='black' btnLable='Add' btnwidth='50%'
+            press={handleAdd} /> */}
+            {/* <TouchableOpacity style={styles.searchButton} onPress={() => fetchItems(searchText)}>
+              <Text style={styles.buttonText}>Search</Text>
+            </TouchableOpacity> */}
+            <View style={styles.quantityContainer}>
+            <TextInput
+              style={styles.inputview}
+              placeholder='Add Quantity' placeholderTextColor={"#000000"}
+              defaultValue="1"
+              onChangeText={text => setQuantity(text)}
+              value={quantity}
+             
+            />
+            <TouchableOpacity style={styles.addButton} onPress={() => handleAdd()}>
+              <Text style={{fontSize:20,fontWeight:'bold'}}>Add</Text>
+            </TouchableOpacity>
+          </View>
+          
+          
+
+{isListVisible && (
+            <FlatList style={{marginTop:'5%',width:'80%',marginLeft:'10%'}}
               data={searchResults}
               keyExtractor={(item) => item.foodId.toString()}
+              ListHeaderComponent={ListHeader}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => handleItemPress(item)}>
                   <View style={styles.resultItem}>
@@ -133,15 +200,6 @@ const SearchByName = ({ route, navigation }) => {
               )}
             />
           )}
-
-          <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }}>Quantity:</Text>
-          <TextInput
-            style={styles.inputview}
-            onChangeText={text => setQuantity(text)}
-            value={quantity}
-          />
-          <Btn bgcolor={lightorange} textcolor='black' btnLable='Add' btnwidth='50%'
-            press={handleAdd} />
         </View>
       </ImageBackground>
     </View>
@@ -163,30 +221,60 @@ const styles = StyleSheet.create({
     paddingLeft: 32
   },
 
+  QuantityInputview:{
+    width: "0%",
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    borderColor: 'black',
+    height: 50,
+    marginTop: 15,
+    marginLeft: 32,
+    marginBottom: 10,
+    justifyContent: "center",
+    paddingLeft: 32
+
+  },
+
   searchContainer: {
     flexDirection: 'row',
-    width: '80%',
+    width: '115%',
     marginBottom: 10,
+  },
+
+  quantityContainer:{
+    flexDirection: 'row',
+    width: '60%',
+    
   },
 
   searchButton: {
     backgroundColor: lightorange,
     borderRadius: 20,
     height: 50,
-    width: '30%',
+    width: '15%',
     marginLeft: 10,
     marginTop: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
+  addButton: {
+    backgroundColor: lightorange,
+    borderRadius: 20,
+    height: 50,
+    width: '70%',
+    marginLeft: 10,
+    marginTop: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   resultItem: {
     padding: 10,
     marginTop: 2,
     backgroundColor: '#ddd',
     borderColor: '#bbb',
-    borderWidth: 1,
-    borderRadius: 5,
+    borderWidth: 2,
+    borderRadius: 30,
   },
 
 })

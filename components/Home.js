@@ -42,10 +42,10 @@ const Home  = ({route,navigation}) => {
   //   }
 
     const displayCalorie = async () => {
-      const cuserId=user.user.userId;
-      console.log("in diaplay..",cuserId)
+      //const cuserId=user.user.userId;
+      console.log("in diaplay..",userId)
       try {
-        const response = await fetch(`http://192.168.56.1:8080/calorie/${cuserId}`, {
+        const response = await fetch(`http://192.168.56.1:8080/calorie/${userId}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(),
@@ -139,12 +139,12 @@ const Home  = ({route,navigation}) => {
     <TouchableOpacity
           style={{ position: 'absolute', top: 0, 
           right: 0, padding: 16 }} onPress={onSharePress}>
-          <Icon name="share-circle" color={lightorange} size={45}></Icon>
+          <Icon name="share-circle" color={lightorange} size={50}></Icon>
         </TouchableOpacity>
 
 
-    <View style={{marginTop:'22%'}}>
-    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage')}/>
+    <View style={{marginTop:'48%'}}>
+    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage',{ userId })}/>
     
     </View>
     <View style={{marginTop:'4%'}}>
@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
         marginBottom:60
     },
     container: {
+      paddingTop:'3%',
       justifyContent: 'center',
       alignItems: 'center',
       
