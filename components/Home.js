@@ -26,23 +26,14 @@ const Home  = ({route,navigation}) => {
   // console.log(userId);
  
  // console.log("in home : .....................",userId);
- 
-  const chartRadius = 120;
   const viewShotRef = useRef();
-   
-  const chartCircumference = 2* Math.PI * chartRadius;
   
+  const chartRadius = 120;
+  const chartCircumference = 2* Math.PI * chartRadius;
 
-  // const displayCalorie=(userId)=>{
-  //   fetch(`http://192.168.56.1:8080/calorie/${userId}`,{
-  //         method: 'GET',
-  //         headers: {'Content-Type': 'application/json'},
-  //         body:JSON.stringify()
-  //     }).then(res=>res.json())
-  //     .then(userCalorie=>setCalorieConsumed(userCalorie.totalCalorie))
-  //     console.log("after api call calorie of uesr is ",userCalorie)
-  //   }
-
+  const chartRediusProtein= 80;
+  const chartCircumferenceProtein = 2* Math.PI * chartRediusProtein;
+  
     const displayCalorie = async () => {
       //const cuserId=user.user.userId;
       console.log("in diaplay..",userId)
@@ -136,6 +127,86 @@ const Home  = ({route,navigation}) => {
       </Svg>
 
     </View>
+
+
+    <View style={styles.containerProtein}>
+      <Svg width={chartRediusProtein * 2 } height={chartRediusProtein * 2} >
+      
+        {/* Full circle representing goal calories */}
+        <Circle
+          cx={chartRediusProtein}
+          cy={chartRediusProtein}
+          r={chartRediusProtein-5}
+          stroke="#000000"
+          strokeWidth={10}
+          fill="transparent"
+        />
+
+        {/* Filled circle representing consumed calories */}
+        <Circle
+          cx={chartRediusProtein}
+          cy={chartRediusProtein}
+          r={chartRediusProtein-5}
+          stroke='#3be38f'
+          strokeWidth={5}
+          fill="transparent"
+          strokeDasharray={`${chartCircumferenceProtein} ${chartCircumferenceProtein}`}
+          strokeDashoffset={chartCircumferenceProtein - (calorieConsumed / goalCalorie) * chartCircumferenceProtein}
+        />
+
+        {/* Text in the center displaying consumed and goal calories */}
+        <SvgText
+          x={chartRediusProtein}
+          y={chartRediusProtein}
+          textAnchor="middle"
+          fontSize="12"
+          fontWeight="bold"
+          fill={lightorange}
+        >
+          {`${calorieConsumed} / ${goalCalorie}`}
+        </SvgText>
+      </Svg>
+
+    <View style={{paddingLeft:'13%'}}>
+      <Svg width={chartRediusProtein * 2 } height={chartRediusProtein * 2} >
+      
+        {/* Full circle representing goal calories */}
+        <Circle
+          cx={chartRediusProtein}
+          cy={chartRediusProtein}
+          r={chartRediusProtein-5}
+          stroke="#000000"
+          strokeWidth={10}
+          fill="transparent"
+        />
+
+        {/* Filled circle representing consumed calories */}
+        <Circle
+          cx={chartRediusProtein}
+          cy={chartRediusProtein}
+          r={chartRediusProtein-5}
+          stroke="#3baee3"
+          strokeWidth={5}
+          fill="transparent"
+          strokeDasharray={`${chartCircumferenceProtein} ${chartCircumferenceProtein}`}
+          strokeDashoffset={chartCircumferenceProtein - (calorieConsumed / goalCalorie) * chartCircumferenceProtein}
+        />
+
+        {/* Text in the center displaying consumed and goal calories */}
+        <SvgText
+          x={chartRediusProtein}
+          y={chartRediusProtein}
+          textAnchor="middle"
+          fontSize="12"
+          fontWeight="bold"
+          fill={lightorange}
+        >
+          {`${calorieConsumed} / ${goalCalorie}`}
+        </SvgText>
+      </Svg>
+      </View>
+
+    </View>
     </ViewShot>
 
 
@@ -146,7 +217,9 @@ const Home  = ({route,navigation}) => {
         </TouchableOpacity>
 
 
-    <View style={{marginTop:'48%'}}>
+
+    {/* <View style={{marginTop:'48%'}}> */}
+    <View style={{marginTop:'22%'}}>
     <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage',{ userId })}/>
     
     </View>
@@ -178,6 +251,11 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       
-    }
+    },
+    containerProtein : {
+      paddingLeft:'5%',
+      flexDirection: 'row',
+    },
+
    
 })

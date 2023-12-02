@@ -6,12 +6,14 @@ import { View, Text, ImageBackground, TextInput, Button, StyleSheet, TouchableOp
 import img from '../assets/background_image.jpg'
 import Btn from './Btn'
 import { lightorange } from './Constants'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SearchByName = ({ route, navigation }) => {
 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [currentSelectedItem, setCurrentSelectedItem] = useState();
   const [quantity, setQuantity] = useState('1');
   const [isListVisible, setIsListVisible] = useState(true);
   const userId = route.params?.userId;
@@ -57,43 +59,24 @@ const SearchByName = ({ route, navigation }) => {
     }
   };
 
-  const handleAdd = async () => {
+  const handleQtyAdded = async () => {
     try {
-      if (selectedItems.length === 0) {
-        // Show an alert that no item is selected
-        alert('Please select at least one item from the list.');
-        return;
-      }
-      // Make sure selectedItems is an array of the selected items
-      //await fetchItems(searchText);
+     
       console.log("selected items in handleAdd", selectedItems);
-      const requestBody = selectedItems.map(item => ({
-        calorie: item.calorie,
-        foodId: item.foodId,
-        foodName: item.foodName,
+      selectedItems.push({
+        calorie: currentSelectedItem.calorie,
+        foodId: currentSelectedItem.foodId,
+        foodName: currentSelectedItem.foodName,
         userId: userId,
         foodQuantity: quantity,
-        totalCalorie: quantity * item.calorie
-      }));
-      console.log("selected items in request body", requestBody)
-      const response = await fetch('http://192.168.56.1:8080/calorie/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers you need
-        },
-        body: JSON.stringify(requestBody),
-      });
+        totalCalorie: quantity * currentSelectedItem.calorie
+      })
+    
+      console.log("selected items in request body", selectedItems)
+     
+      setSelectedItems(selectedItems);
 
-      const responseData = await response.json();
-
-      // Handle the response data as needed
-      console.log('calorie add API Response:', responseData);
-
-      // Clear the selected items after the API call
-      setSelectedItems([]);
-
-      navigation.goBack();
+    
       //navigation.navigate('Home');
     } catch (error) {
       console.error('Error performing API call:', error);
@@ -103,23 +86,32 @@ const SearchByName = ({ route, navigation }) => {
 
   };
 
+const handleAdd = async()=>{
+console.log("calling api++++", selectedItems);
+const requestBody = selectedItems;
+const response = await fetch('http://192.168.56.1:8080/calorie/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any other headers you need
+        },
+        body: JSON.stringify(requestBody),
+      });
 
+      const responseData = await response.json();
+      console.log('calorie add API Response:', responseData);
+      setSelectedItems([]);
+      navigation.goBack();
+
+};
   const handleItemPress = (item) => {
     // Check if the item is already selected
     console.log("item in handlepress",item);
-    const isSelected = selectedItems.some((selectedItem) => selectedItem.foodId === item.foodId);
-
-    if (isSelected) {
-      // If selected, remove it from the selectedItems
-      setSelectedItems((prevSelectedItems) =>
-        prevSelectedItems.filter((selectedItem) => selectedItem.foodId !== item.foodId)
-      );
-
-    } else {
-      // If not selected, add it to the selectedItems
-      setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item]);
+    //const isSelected = selectedItems.some((selectedItem) => selectedItem.foodId === item.foodId);
+setCurrentSelectedItem(item);
+  
       setSearchText(item.foodName);
-    }
+    
     setIsListVisible(false);
   };
 
@@ -139,7 +131,7 @@ const SearchByName = ({ route, navigation }) => {
       <View style={{marginLeft:'21%',marginTop:'9%'}} >
         <Text style={{fontSize:22, fontWeight:'bold', color:'#E36A30'}}>CalorieCrowd</Text>
       </View>
-        <View style={{ paddingTop: '38%' }}>
+        <View style={{ paddingTop: '30%' }}>
           <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }} >Search for items:</Text>
           <View style={styles.searchContainer}>
             <TextInput
@@ -156,16 +148,7 @@ const SearchByName = ({ route, navigation }) => {
           
           <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }}>Quantity:</Text>
           
-          {/* <TextInput
-            style={styles.QuantityInputview}
-            onChangeText={text => setQuantity(text)}
-            value={quantity}
-          /> */}
-          {/* <Btn bgcolor={lightorange} textcolor='black' btnLable='Add' btnwidth='50%'
-            press={handleAdd} /> */}
-            {/* <TouchableOpacity style={styles.searchButton} onPress={() => fetchItems(searchText)}>
-              <Text style={styles.buttonText}>Search</Text>
-            </TouchableOpacity> */}
+          
             <View style={styles.quantityContainer}>
             <TextInput
               style={styles.inputview}
@@ -175,10 +158,14 @@ const SearchByName = ({ route, navigation }) => {
               value={quantity}
              
             />
-            <TouchableOpacity style={styles.addButton} onPress={() => handleAdd()}>
-              <Text style={{fontSize:20,fontWeight:'bold'}}>Add</Text>
+            <TouchableOpacity style={{paddingTop:12,paddingLeft:10}} onPress={() => handleQtyAdded()}>
+            <Icon name="checkbox-marked-circle" color={lightorange} size={50}></Icon>
             </TouchableOpacity>
+            
           </View>
+          <TouchableOpacity style={styles.addButton} onPress={() => handleAdd()}>
+              <Text style={{fontSize:20,fontWeight:'bold'}}>Add Items</Text>
+            </TouchableOpacity>
           
           
 
@@ -264,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 50,
     width: '70%',
-    marginLeft: 10,
+    marginLeft: "15%",
     marginTop: 16,
     justifyContent: 'center',
     alignItems: 'center',
