@@ -28,7 +28,7 @@ const SearchByName = ({ route, navigation }) => {
      fetchItems(itemName);
     }
 
-  },[searchText]);
+  },[]);
  
 
 
@@ -118,6 +118,7 @@ const SearchByName = ({ route, navigation }) => {
     } else {
       // If not selected, add it to the selectedItems
       setSelectedItems((prevSelectedItems) => [...prevSelectedItems, item]);
+      setSearchText(item.foodName);
     }
     setIsListVisible(false);
   };

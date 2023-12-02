@@ -78,13 +78,15 @@ console.log("component rendered");
 
     const openGallary=async()=>{
         const result=await launchImageLibrary(options);
-        console.log(result)
+        setImageString(result.assets[0].base64);
+        
     }
     
     const handleItemPress = (item) => {
 
       setSelectedItemName(item);
       navigation.navigate('SearchByName',{item,userId});
+      setIsListVisible(false);
 
     }
 

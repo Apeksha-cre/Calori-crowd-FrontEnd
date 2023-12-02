@@ -17,6 +17,8 @@ const Home  = ({route,navigation}) => {
   const[calorieConsumed,setCalorieConsumed]=useState(null);
   const user = route.params?.user || { user: { name:"" } };
   const userId=user.user.userId;
+  const goalCalorie=user.user.goalCalorie;
+ 
  // const bs = React.useRef(null)
   //const user=route.params.user;
  // const[userId,setUserId]=useState();
@@ -24,7 +26,7 @@ const Home  = ({route,navigation}) => {
   // console.log(userId);
  
  // console.log("in home : .....................",userId);
-  const goalCalorie=5000;
+ 
   const chartRadius = 120;
   const viewShotRef = useRef();
    
@@ -44,6 +46,7 @@ const Home  = ({route,navigation}) => {
     const displayCalorie = async () => {
       //const cuserId=user.user.userId;
       console.log("in diaplay..",userId)
+     
       try {
         const response = await fetch(`http://192.168.56.1:8080/calorie/${userId}`, {
           method: 'GET',

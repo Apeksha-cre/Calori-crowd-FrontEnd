@@ -12,11 +12,12 @@ const SignUp = ({navigation}) =>
     const[email,setEmail]=useState("")
     const [confirmPassword,setConfirmPassword]=useState("")
     const[mobileNumber,setMobileNumber]=useState('')
+    const [goalCalorie,setGoalCalorie]=useState('');
     const[formError,setFormError]=useState({});
     const[responseData,setResponseData]=useState([]);
 
-    const user={name,email,password,confirmPassword,mobileNumber}
-    const userSignUp={name,email,password,mobileNumber}
+    const user={name,email,password,confirmPassword,mobileNumber,goalCalorie}
+    const userSignUp={name,email,password,mobileNumber,goalCalorie}
 
     const handleSignUP=()=>{
         console.log("in signup method")
@@ -101,6 +102,12 @@ const SignUp = ({navigation}) =>
       placeholderTextColor={"#000000"} value={confirmPassword}onChangeText={setConfirmPassword}/>  
     </View>
 
+    <Text style={styles.headingtext}> Goal Calorie</Text>
+    <View style={styles.inputview}>
+     <TextInput style={{height:50,color:'#000000'}} placeholder='Ex.3000'
+      placeholderTextColor={"#000000"} value={goalCalorie}onChangeText={setGoalCalorie}/>  
+    </View>
+
     <Text style={styles.headingtext}> MobileNumber</Text>
     <View style={styles.inputview}>
      <TextInput style={{height:50,color:'#000000'}} placeholder='Enter your Email' 
@@ -124,7 +131,7 @@ const styles = StyleSheet.create({
         color:'#000000',
         paddingLeft:20,
         alignSelf:'center',
-        marginTop:'28%',
+        marginTop:'32%',
         marginBottom:'4%'
     },
     inputview:{
