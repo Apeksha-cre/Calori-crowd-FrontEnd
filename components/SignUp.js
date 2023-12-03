@@ -1,5 +1,5 @@
 import React from 'react'
-import{View, Text, ImageBackground, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import{View, Text, ImageBackground, StyleSheet, TextInput, TouchableOpacity,Alert} from 'react-native';
 import img from '../assets/background_image.jpg'
 import{ useState } from 'react';
 import Btn from './Btn'
@@ -10,65 +10,86 @@ const SignUp = ({navigation}) =>
     const [name,setName] = useState("")
     const[password,setPassword]=useState('') 
     const[email,setEmail]=useState("")
-    const [confirmPassword,setConfirmPassword]=useState("")
     const[mobileNumber,setMobileNumber]=useState('')
     const [goalCalorie,setGoalCalorie]=useState('');
+    const[weight,setWeight]=useState('');
     const[formError,setFormError]=useState({});
     const[responseData,setResponseData]=useState([]);
 
-    const user={name,email,password,confirmPassword,mobileNumber,goalCalorie}
-    const userSignUp={name,email,password,mobileNumber,goalCalorie}
+    const user={name,email,password,mobileNumber,goalCalorie,weight}
+    //const userSignUp={name,email,password,mobileNumber,goalCalorie,weight}
 
-    const handleSignUP=()=>{
-        console.log("in signup method")
-        setFormError(validate(user));
-        console.log(formError);
-        console.log(user);
-        fetch('http://192.168.56.1:8080/signUp',{
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body:JSON.stringify(userSignUp)
-        }).then(console.log("new user is : ")).then(res=>res.json())
-        .then(newuser=>setResponseData(newuser)).then(console.log(responseData))
-        .then(navigation.navigate("Login"));
-    }
-
-    const validate=(user)=>{
-        const error={};
-        const regex=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-        if(!user.name)
-        {
-            error.name="Type your first name!";
+    const handleSignUp = async () => {
+        try {
+            console.log("In signup method");
+    
+            // Validate user input
+            const formError = await validate(user);
+            setFormError(formError);
+            console.log("Form errors:", formError);
+    
+            // If there are validation errors, do not proceed with signup
+            if (Object.keys(formError).length > 0) {
+                return;
+            }
+    
+            // If validation passes, proceed with signup
+            const response = await fetch('http://192.168.56.1:8080/signUp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user),
+            });
+    
+            // Check if the request was successful
+            if (!response.ok) {
+                console.error('Failed to sign up:', response.statusText);
+                // Handle the error appropriately, e.g., show a user-friendly message
+                return;
+            }
+    
+            // Parse the response JSON
+            const newUser = await response.json();
+            console.log("New user is:", newUser);
+    
+            // Update the state with the response data
+            setResponseData(newUser);
+    
+            // Navigate to the login screen
+            navigation.navigate("Login");
+        } catch (error) {
+            console.error('Error during signup:', error);
+            // Handle the error appropriately, e.g., show a user-friendly message
         }
-
-        if(!user.email)
-        {
-            error.email="email is required!";
+    };
+    
+    const validate = (user) => {
+        const errors = {};
+    
+        // Validate name
+        if (!user.name) {
+            errors.name = "Type your first name!";
+            Alert.alert("Type your first name!");
         }
-        else if(!regex.test(user.email))
-        {
-            error.email="email should be in a correct formate!";
+    
+        // Validate email
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (!user.email) {
+            errors.email = "Email is required!";
+        } else if (!emailRegex.test(user.email)) {
+            errors.email = "Email should be in the correct format!";
+            Alert.alert("Email should be in the correct format!");
+            
         }
-
-        if(!user.password)
-        {
-            error.password="password is required!!";
+    
+        // Validate password
+        if (!user.password) {
+            errors.password = "Password is required!";
+            Alert.alert("Password is required!");
         }
-
-        
-        if(!user.confirmPassword)
-        {
-            error.password="password is required!!";
-        }
-        else if(user.confirmPassword != user.password)
-        {
-            error.confirmPassword="password is not matching!!!"
-        }
-
-        return error;
-
-    }
+    
+        return errors;
+    };
+    
     
     
   return (
@@ -96,16 +117,16 @@ const SignUp = ({navigation}) =>
      placeholderTextColor={"#000000"} secureTextEntry={true} value={password} onChangeText={setPassword}/>  
     </View>
 
-    <Text style={styles.headingtext}> ConfirmPassword</Text>
-    <View style={styles.inputview}>
-     <TextInput style={{height:50,color:'#000000'}} placeholder='Confirm your password'
-      placeholderTextColor={"#000000"} value={confirmPassword}onChangeText={setConfirmPassword}/>  
-    </View>
-
     <Text style={styles.headingtext}> Goal Calorie</Text>
     <View style={styles.inputview}>
      <TextInput style={{height:50,color:'#000000'}} placeholder='Ex.3000'
       placeholderTextColor={"#000000"} value={goalCalorie}onChangeText={setGoalCalorie}/>  
+    </View>
+
+    <Text style={styles.headingtext}> weight </Text>
+    <View style={styles.inputview}>
+     <TextInput style={{height:50,color:'#000000'}} placeholder='Ex.50'
+      placeholderTextColor={"#000000"} value={weight}onChangeText={setWeight}/>  
     </View>
 
     <Text style={styles.headingtext}> MobileNumber</Text>
@@ -115,7 +136,7 @@ const SignUp = ({navigation}) =>
     </View>
 
 <View style={{marginTop:'8%'}}>
-<Btn bgcolor={lightorange} textcolor='black' btnLable='SignUp' btnwidth='50%' press={handleSignUP}/>
+<Btn bgcolor={lightorange} textcolor='black' btnLable='SignUp' btnwidth='50%' press={handleSignUp}/>
 </View>
     
     </ImageBackground>

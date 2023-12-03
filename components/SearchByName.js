@@ -64,12 +64,16 @@ const SearchByName = ({ route, navigation }) => {
      
       console.log("selected items in handleAdd", selectedItems);
       selectedItems.push({
-        calorie: currentSelectedItem.calorie,
+        calories: currentSelectedItem.calorie,
         foodId: currentSelectedItem.foodId,
         foodName: currentSelectedItem.foodName,
+        protein:currentSelectedItem.protein,
+        carb:currentSelectedItem.netCarb,
         userId: userId,
         foodQuantity: quantity,
-        totalCalorie: quantity * currentSelectedItem.calorie
+        totalCalorie: quantity * currentSelectedItem.calorie,
+        totalProtein:quantity*currentSelectedItem.protein,
+        totalCarb:quantity*currentSelectedItem.netCarb
       })
     
       console.log("selected items in request body", selectedItems)
@@ -109,6 +113,7 @@ const response = await fetch('http://192.168.56.1:8080/calorie/add', {
     console.log("item in handlepress",item);
     //const isSelected = selectedItems.some((selectedItem) => selectedItem.foodId === item.foodId);
 setCurrentSelectedItem(item);
+console.log("item calorie................",item.calorie);
   
       setSearchText(item.foodName);
     

@@ -15,9 +15,15 @@ import Btn from './Btn';
 const Home  = ({route,navigation}) => {
 
   const[calorieConsumed,setCalorieConsumed]=useState(null);
+  const[proteinConsumed,setProteinConsumed]=useState(null);
+  const[carbConsumed,setCarbConsumed]=useState(null);
+  
   const user = route.params?.user || { user: { name:"" } };
   const userId=user.user.userId;
   const goalCalorie=user.user.goalCalorie;
+  const goalProtein=user.user.weight*0.75;
+ 
+  
  
  // const bs = React.useRef(null)
   //const user=route.params.user;
@@ -45,18 +51,26 @@ const Home  = ({route,navigation}) => {
           body: JSON.stringify(),
         });
   
-      const userCalorie = await response.json();
-      console.log("response for calorie api",userCalorie)
-      setCalorieConsumed(userCalorie.totalCalorie)
+      const userNutriConsumed = await response.json();
+      console.log("response for calorie api........",userNutriConsumed)
+      setCalorieConsumed(userNutriConsumed.totalCalorie)
+      setProteinConsumed(userNutriConsumed.totalProtein)
+      setCarbConsumed(userNutriConsumed.totalCarb)
+
       } catch (error) {
         console.log('Error:', error);
       }
     };
 
+    
+
+
+
     useFocusEffect(
       React.useCallback(() => {
         // Fetch data when the screen gains focus
         displayCalorie();
+       
       }, [])
     );
 
@@ -76,6 +90,9 @@ const Home  = ({route,navigation}) => {
       }
     };
 
+    const onLogOut = async () => {
+      navigation.navigate('WelcomeScreen');
+    }
    
   
 
@@ -151,7 +168,7 @@ const Home  = ({route,navigation}) => {
           strokeWidth={5}
           fill="transparent"
           strokeDasharray={`${chartCircumferenceProtein} ${chartCircumferenceProtein}`}
-          strokeDashoffset={chartCircumferenceProtein - (calorieConsumed / goalCalorie) * chartCircumferenceProtein}
+          strokeDashoffset={chartCircumferenceProtein - (proteinConsumed / goalProtein) * chartCircumferenceProtein}
         />
 
         {/* Text in the center displaying consumed and goal calories */}
@@ -163,7 +180,7 @@ const Home  = ({route,navigation}) => {
           fontWeight="bold"
           fill={lightorange}
         >
-          {`${calorieConsumed} / ${goalCalorie}`}
+          {`${proteinConsumed} / ${goalProtein}`}
         </SvgText>
       </Svg>
 
@@ -189,7 +206,7 @@ const Home  = ({route,navigation}) => {
           strokeWidth={5}
           fill="transparent"
           strokeDasharray={`${chartCircumferenceProtein} ${chartCircumferenceProtein}`}
-          strokeDashoffset={chartCircumferenceProtein - (calorieConsumed / goalCalorie) * chartCircumferenceProtein}
+          strokeDashoffset={chartCircumferenceProtein - (carbConsumed / goalCalorie) * chartCircumferenceProtein}
         />
 
         {/* Text in the center displaying consumed and goal calories */}
@@ -201,7 +218,7 @@ const Home  = ({route,navigation}) => {
           fontWeight="bold"
           fill={lightorange}
         >
-          {`${calorieConsumed} / ${goalCalorie}`}
+          {`${carbConsumed} / ${goalCalorie}`}
         </SvgText>
       </Svg>
       </View>
@@ -216,6 +233,11 @@ const Home  = ({route,navigation}) => {
           <Icon name="share-circle" color={lightorange} size={50}></Icon>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={{ position: 'absolute', top: 1, 
+          right: 0, paddingTop:65,paddingRight:14 }} onPress={onLogOut}>
+          <Icon name="logout" color={lightorange} size={48}></Icon>
+        </TouchableOpacity>
 
 
     {/* <View style={{marginTop:'48%'}}> */}
