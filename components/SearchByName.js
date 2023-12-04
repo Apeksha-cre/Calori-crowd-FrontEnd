@@ -16,6 +16,7 @@ const SearchByName = ({ route, navigation }) => {
   const [currentSelectedItem, setCurrentSelectedItem] = useState();
   const [quantity, setQuantity] = useState('1');
   const [isListVisible, setIsListVisible] = useState(true);
+  const[iscartVisible,setIsCartVisible]=useState(false);
   const userId = route.params?.userId;
  const itemName= route.params?.item;
   console.log("useid in searchbyname", userId);
@@ -79,7 +80,7 @@ const SearchByName = ({ route, navigation }) => {
       console.log("selected items in request body", selectedItems)
      
       setSelectedItems(selectedItems);
-
+     // displaySelecteditem(selectedItems);
     
       //navigation.navigate('Home');
     } catch (error) {
@@ -129,9 +130,18 @@ console.log("item calorie................",item.calorie);
       </View>
     )}
 
+    const handleCart=(selectedItems)=>{
+       console.log("in cart")
+      // setIsCartVisible(true);
+      
+      navigation.navigate('SelectedItemCart', {selectedItems});
+    }
 
   return (
     <View>
+
+
+
       <ImageBackground source={img} style={{ height: '100%', width: '100%' }} resizeMode='stretch'>
       <View style={{marginLeft:'21%',marginTop:'9%'}} >
         <Text style={{fontSize:22, fontWeight:'bold', color:'#E36A30'}}>CalorieCrowd</Text>
@@ -166,14 +176,17 @@ console.log("item calorie................",item.calorie);
             <TouchableOpacity style={{paddingTop:12,paddingLeft:10}} onPress={() => handleQtyAdded()}>
             <Icon name="checkbox-marked-circle" color={lightorange} size={50}></Icon>
             </TouchableOpacity>
+
+            <TouchableOpacity style={{paddingTop:12,paddingLeft:10}} onPress={() => handleCart(selectedItems)}>
+            <Icon name="cart" color={lightorange} size={50}></Icon>
+            </TouchableOpacity>
             
           </View>
           <TouchableOpacity style={styles.addButton} onPress={() => handleAdd()}>
               <Text style={{fontSize:20,fontWeight:'bold'}}>Add Items</Text>
             </TouchableOpacity>
-          
-          
 
+        
 {isListVisible && (
             <FlatList style={{marginTop:'5%',width:'80%',marginLeft:'10%'}}
               data={searchResults}
@@ -193,6 +206,8 @@ console.log("item calorie................",item.calorie);
               )}
             />
           )}
+
+   
         </View>
       </ImageBackground>
     </View>

@@ -231,7 +231,7 @@ const Home  = ({route,navigation}) => {
           style={{ position: 'absolute', top: 0, 
           right: 0, padding: 16 }} onPress={onLogOut }>
           <Icon name="logout" color={lightorange} size={50}></Icon>
-          <Text Style={{fontSize:8,color:'#000000', fontWeight:'bold'}}>LogOut</Text>
+          <Text style={{fontSize:18,fontWeight:'bold', paddingLeft:5,color:"#F6C9B0"}}>LogOut</Text>
         </TouchableOpacity>
         
 
