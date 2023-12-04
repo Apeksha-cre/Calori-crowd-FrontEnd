@@ -229,15 +229,18 @@ const Home  = ({route,navigation}) => {
 
     <TouchableOpacity
           style={{ position: 'absolute', top: 0, 
-          right: 0, padding: 16 }} onPress={onSharePress}>
-          <Icon name="share-circle" color={lightorange} size={50}></Icon>
+          right: 0, padding: 16 }} onPress={onLogOut }>
+          <Icon name="logout" color={lightorange} size={50}></Icon>
+          <Text Style={{fontSize:8,color:'#000000', fontWeight:'bold'}}>LogOut</Text>
         </TouchableOpacity>
+        
 
+<View>
         <TouchableOpacity
           style={{ position: 'absolute', top: 1, 
-          right: 0, paddingTop:65,paddingRight:14 }} onPress={onLogOut}>
-          <Icon name="logout" color={lightorange} size={48}></Icon>
-        </TouchableOpacity>
+          right: 0,paddingRight:14 }} onPress={onSharePress}>
+          <Icon name="share-circle" color={lightorange} size={48}></Icon>
+        </TouchableOpacity></View>
 
 
     {/* <View style={{marginTop:'48%'}}> */}
