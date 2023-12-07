@@ -93,6 +93,12 @@ const Home  = ({route,navigation}) => {
     const onLogOut = async () => {
       navigation.navigate('WelcomeScreen');
     }
+
+    const profileHandle =async()=>{
+      console.log("user in profile handle..",user)
+      navigation.navigate("Profile",{user})
+      console.log("in profilehandle..")
+    }
    
   
 
@@ -101,7 +107,9 @@ const Home  = ({route,navigation}) => {
     <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>
    
       <View>
+      <TouchableOpacity onPress={profileHandle}>
       <Text style={styles.text}>Hi, {user.user.name} </Text>
+      </TouchableOpacity>
       </View>
      
       <ViewShot  ref={(ref) => (viewShotRef.current = ref)} options={{ format: 'png', quality: 0.8 }}>

@@ -10,6 +10,7 @@ import Home from './components/Home';
 import SearchByName from './components/SearchByName';
 import SearchByImage from './components/SearchByImage';
 import SelectedItemCart from './components/SelectedItemCart';
+import Profile from './components/Profile';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +26,7 @@ function App() {
       <Stack.Screen name='SearchByName' component={SearchByName}/>
       <Stack.Screen name='SearchByImage' component={SearchByImage}/>
       <Stack.Screen name='SelectedItemCart' component={SelectedItemCart}/>
+      <Stack.Screen name='Profile' component={Profile}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
