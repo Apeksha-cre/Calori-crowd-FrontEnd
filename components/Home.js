@@ -148,7 +148,18 @@ const Home  = ({route,navigation}) => {
           fill={lightorange}
         >
           {`${calorieConsumed} / ${goalCalorie}`}
+          
         </SvgText>
+
+        <SvgText
+        x={chartRadius}
+        y={chartRadius + 20} // Adjust the Y-coordinate to position it below
+        textAnchor="middle"
+        fontSize="16"
+        fill="#000000"
+      >
+        Calories
+      </SvgText>
       </Svg>
 
     </View>
@@ -190,6 +201,16 @@ const Home  = ({route,navigation}) => {
         >
           {`${proteinConsumed} / ${goalProtein}`}
         </SvgText>
+        <SvgText
+        x={chartRadius-40}
+        y={chartRadius-15} // Adjust the Y-coordinate to position it below
+        textAnchor="middle"
+        fontSize="12"
+        fontWeight='bold'
+        fill="#000000"
+      >
+        Protein
+      </SvgText>
       </Svg>
 
     <View style={{paddingLeft:'13%'}}>
@@ -228,6 +249,16 @@ const Home  = ({route,navigation}) => {
         >
           {`${carbConsumed} / ${goalCalorie}`}
         </SvgText>
+        <SvgText
+        x={chartRadius-40}
+        y={chartRadius-15} // Adjust the Y-coordinate to position it below
+        textAnchor="middle"
+        fontSize="12"
+        fontWeight='bold'
+        fill="#000000"
+      >
+        Carb
+      </SvgText>
       </Svg>
       </View>
 
