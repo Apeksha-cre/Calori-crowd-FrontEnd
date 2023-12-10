@@ -22,7 +22,7 @@ const Home  = ({route,navigation}) => {
   const userId=user.user.userId;
   const goalCalorie=user.user.goalCalorie;
   const goalProtein=user.user.weight*0.75;
- 
+ const bearerToken=user.bearerToken;
   
  
  // const bs = React.useRef(null)
@@ -43,11 +43,12 @@ const Home  = ({route,navigation}) => {
     const displayCalorie = async () => {
       //const cuserId=user.user.userId;
       console.log("in diaplay..",userId)
-     
+      console.log("in diaplay token..",bearerToken)
+
       try {
         const response = await fetch(`http://192.168.56.1:8080/calorie/${userId}`, {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+bearerToken },
           body: JSON.stringify(),
         });
   
@@ -253,11 +254,11 @@ const Home  = ({route,navigation}) => {
 
     {/* <View style={{marginTop:'48%'}}> */}
     <View style={{marginTop:'22%'}}>
-    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage',{ userId })}/>
+    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Image' btnwidth='80%' press={() => navigation.navigate('SearchByImage',{ user })}/>
     
     </View>
     <View style={{marginTop:'4%'}}>
-    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Name' btnwidth='80%' press={() => navigation.navigate('SearchByName',{ userId })}/>
+    <Btn bgcolor={lightorange} textcolor='black' btnLable='Search by Name' btnwidth='80%' press={() => navigation.navigate('SearchByName',{ user })}/>
     </View>
    
       </ImageBackground>
