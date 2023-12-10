@@ -17,7 +17,10 @@ const SearchByName = ({ route, navigation }) => {
   const [quantity, setQuantity] = useState('1');
   const [isListVisible, setIsListVisible] = useState(true);
   const[iscartVisible,setIsCartVisible]=useState(false);
-  const userId = route.params?.userId;
+  const user = route.params?.user;
+  console.log("user in searchbyname", user);
+  const userId= user.user.userId;
+  const bearerToken= user.bearerToken;
  const itemName= route.params?.item;
   console.log("useid in searchbyname", userId);
   //const [requestBody,setRequestBody]=useState([]);
@@ -44,7 +47,9 @@ const SearchByName = ({ route, navigation }) => {
       // Example:
       console.log("in fetch")
       console.log(foodName)
-      const response = await fetch(`http://192.168.56.1:8080/food?foodName=${foodName}`);
+      const response = await fetch(`http://192.168.56.1:8080/food?foodName=${foodName}`,{
+      headers: {'Authorization': 'Bearer '+bearerToken }
+    });
       const data = await response.json();
       // Update the setSearchResults state with the response
       // if(data.items==null)
@@ -99,6 +104,7 @@ const response = await fetch('http://192.168.56.1:8080/calorie/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+bearerToken
           // Add any other headers you need
         },
         body: JSON.stringify(requestBody),

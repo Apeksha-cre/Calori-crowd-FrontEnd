@@ -14,7 +14,10 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 //import { Image } from 'react-native-svg';
 
 const SearchByImage = ({route,navigation}) => {
-  const {userId}=route.params;
+  const user = route.params?.user;
+  const userId = user.user.userId;
+  const bearerToken= user.bearerToken;
+  console.log("user in searchbyimage",user)
   console.log("useid in searchbyimage",userId)
 console.log("component rendered");
     //const [cameraPhoto,setCameraPhoto]=useState();
@@ -33,6 +36,7 @@ console.log("component rendered");
       const response = await fetch('http://192.168.56.1:8080/image', {
           method: 'POST',
           body: imageString,
+          headers: {'Authorization': 'Bearer '+bearerToken },
         });
 
         const responseData = await response.json();
@@ -85,7 +89,7 @@ console.log("component rendered");
     const handleItemPress = (item) => {
 
       setSelectedItemName(item);
-      navigation.navigate('SearchByName',{item,userId});
+      navigation.navigate('SearchByName',{item,user});
       setIsListVisible(false);
 
     }
