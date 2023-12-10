@@ -20,10 +20,10 @@ const SelectedItemCart = () => {
                   <View style={styles.resultItem}>
                     <Text>{item.foodName}</Text>
                     <Text>{item.foodId}</Text>
-                    <Text>{item.foodQuantity}</Text>
-                    <Text>Calorie: {item.totalCalorie}</Text>
-                    <Text>Protein: {item.totalProtein}</Text>
-                    <Text>Net Carb: {item.totalCarb}</Text>
+                    <Text>Quantity:{item.foodQuantity}</Text>
+                    <Text>TotalCalorie: {item.totalCalorie}</Text>
+                    <Text>TotalProtein: {item.totalProtein}</Text>
+                    <Text>TotalCarb: {item.totalCarb}</Text>
                     {/* Add more information or components as needed */}
                   </View>
               )}

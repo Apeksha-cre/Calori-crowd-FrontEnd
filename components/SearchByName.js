@@ -2,7 +2,7 @@
 
 
 import React, { useState, useEffect } from 'react'
-import { View, Text, ImageBackground, TextInput, Button, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, ImageBackground, TextInput, Button, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native'
 import img from '../assets/background_image.jpg'
 import Btn from './Btn'
 import { lightorange } from './Constants'
@@ -63,7 +63,7 @@ const SearchByName = ({ route, navigation }) => {
   const handleQtyAdded = async () => {
     try {
      
-      console.log("selected items in handleAdd", selectedItems);
+      console.log("selected items in handlequntyAdd", selectedItems);
       selectedItems.push({
         calories: currentSelectedItem.calorie,
         foodId: currentSelectedItem.foodId,
@@ -84,6 +84,7 @@ const SearchByName = ({ route, navigation }) => {
     
       //navigation.navigate('Home');
     } catch (error) {
+      Alert.alert("Please select item from the list");
       console.error('Error performing API call:', error);
     }
 
@@ -161,7 +162,7 @@ console.log("item calorie................",item.calorie);
           </View>
 
           
-          <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }}>Quantity:</Text>
+          <Text style={{ paddingLeft: '12%', fontWeight: 'bold', fontSize: 18 }}>Quantity:(1=100gm)</Text>
           
           
             <View style={styles.quantityContainer}>
