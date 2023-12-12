@@ -11,26 +11,19 @@ import { lightorange } from './Constants'
 import Btn from './Btn';
 import img from '../assets/background_image.jpg'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-//import { Image } from 'react-native-svg';
+
 
 const SearchByImage = ({route,navigation}) => {
   const user = route.params?.user;
   const userId = user.user.userId;
   const bearerToken= user.bearerToken;
-  console.log("user in searchbyimage",user)
-  console.log("useid in searchbyimage",userId)
-console.log("component rendered");
-    //const [cameraPhoto,setCameraPhoto]=useState();
-    const [imageString, setImageString]=useState("");
-    //const[searchResult,setSearchResult]=useState([]);
+  const [imageString, setImageString]=useState("");
   const [recognitionResults, setRecognitionResults] = useState([]);
   const[selectedItemName,setSelectedItemName]=useState("");
   const [isListVisible, setIsListVisible] = useState(true);
  
   useEffect(() => {
     if(imageString){
-    console.log("use effect called searchbyimage");
-    //console.log("image set 2", imageString);
     const fetchData = async () => {
     try{
       const response = await fetch('http://192.168.56.1:8080/image', {
@@ -40,14 +33,9 @@ console.log("component rendered");
         });
 
         const responseData = await response.json();
-        //console.log(imageString);
 
         console.log("responsedata from image", JSON.stringify(responseData));
-      //  setSearchResult(responseData);
-      // const nameList=[];
-      // for(let i=0;i<responseData.segmentation_results[0].recognition_results)
         setRecognitionResults(responseData.segmentation_results[0].recognition_results);
-      //  console.log("recognization result",recognitionResults);
       }
       catch (error) {
         // Handle errors that might occur during the asynchronous operations
@@ -74,8 +62,6 @@ console.log("component rendered");
             {
                 const result= await launchCamera(options);
                 setImageString(result.assets[0].base64);
-                //console.log("image set", result);
-                //setCameraPhoto(result.assets[0].uri);
             }            
           
     }
@@ -93,11 +79,7 @@ console.log("component rendered");
       setIsListVisible(false);
 
     }
-
-
-
-
-
+    
   return (
     <View>
     <ImageBackground source={img} style={{ height: '100%', width:'100%'}} resizeMode='stretch'>

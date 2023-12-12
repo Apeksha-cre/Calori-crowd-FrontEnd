@@ -27,4 +27,3 @@ export default function WelcomeScreen(props) {
   )
 }
 
-//const styles = StyleSheet.create({})

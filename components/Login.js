@@ -13,29 +13,7 @@ const Login = ({navigation}) =>
     const[email,setEmail]=useState("");
    const[password,setPassword]=useState("");
    const loginUser = { email, password };
-   //const[responseData,setResponseData]=useState([])
-   //const loginUser={email,password}
-   //console.log(loginUser)
-
-    //    const handlePress=()=>{
-    //     console.log("in hadlepress function");
-    //     fetch(url,{
-    //         method: 'POST',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body:JSON.stringify(loginUser)
-    //     }).then(res=>res.json())
-    //     .then(User=>{setResponseData(User); 
-    //         if(responseData.user==null)
-    //     {
-    //         Alert.alert("USER NOT REGISTERD")
-    //     }
-    //     else{
-    //         navigation.navigate('Home',{user:responseData});
-    //     }
-    //     console.log(" still in hadlepress function")})
-    //     .catch(err=>console.log(err));
-    // };
-
+   
     const handlePress = async () => {
         console.log('In handlePress function');
     

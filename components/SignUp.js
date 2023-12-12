@@ -15,9 +15,8 @@ const SignUp = ({navigation}) =>
     const[weight,setWeight]=useState('');
     const[formError,setFormError]=useState({});
     const[responseData,setResponseData]=useState([]);
-
     const user={name,email,password,mobileNumber,goalCalorie,weight}
-    //const userSignUp={name,email,password,mobileNumber,goalCalorie,weight}
+    
 
     const handleSignUp = async () => {
         try {

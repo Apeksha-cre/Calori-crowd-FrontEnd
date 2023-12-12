@@ -21,16 +21,13 @@ const SearchByName = ({ route, navigation }) => {
   console.log("user in searchbyname", user);
   const userId= user.user.userId;
   const bearerToken= user.bearerToken;
- const itemName= route.params?.item;
+  const itemName= route.params?.item;
   console.log("useid in searchbyname", userId);
-  //const [requestBody,setRequestBody]=useState([]);
+  
   
   useEffect(()=>{
     if(itemName!="")
     {
-
-      console.log("use effect call")
-      //setSearchText(itemName);
      fetchItems(itemName);
     }
 
@@ -51,12 +48,6 @@ const SearchByName = ({ route, navigation }) => {
       headers: {'Authorization': 'Bearer '+bearerToken }
     });
       const data = await response.json();
-      // Update the setSearchResults state with the response
-      // if(data.items==null)
-      // {
-      //   console.log("empty");
-      // }
-     
       setIsListVisible(true);
       setSearchResults(data);
 
@@ -81,20 +72,11 @@ const SearchByName = ({ route, navigation }) => {
         totalProtein:quantity*currentSelectedItem.protein,
         totalCarb:quantity*currentSelectedItem.netCarb
       })
-    
-      console.log("selected items in request body", selectedItems)
-     
       setSelectedItems(selectedItems);
-     // displaySelecteditem(selectedItems);
-    
-      //navigation.navigate('Home');
     } catch (error) {
       Alert.alert("Please select item from the list");
       console.error('Error performing API call:', error);
     }
-
-
-
   };
 
 const handleAdd = async()=>{
@@ -105,7 +87,6 @@ const response = await fetch('http://192.168.56.1:8080/calorie/add', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer '+bearerToken
-          // Add any other headers you need
         },
         body: JSON.stringify(requestBody),
       });
@@ -119,12 +100,8 @@ const response = await fetch('http://192.168.56.1:8080/calorie/add', {
   const handleItemPress = (item) => {
     // Check if the item is already selected
     console.log("item in handlepress",item);
-    //const isSelected = selectedItems.some((selectedItem) => selectedItem.foodId === item.foodId);
-setCurrentSelectedItem(item);
-console.log("item calorie................",item.calorie);
-  
-      setSearchText(item.foodName);
-    
+    setCurrentSelectedItem(item);
+    setSearchText(item.foodName);
     setIsListVisible(false);
   };
 
@@ -138,17 +115,11 @@ console.log("item calorie................",item.calorie);
     )}
 
     const handleCart=(selectedItems)=>{
-       console.log("in cart")
-      // setIsCartVisible(true);
-      
       navigation.navigate('SelectedItemCart', {selectedItems});
     }
 
   return (
     <View>
-
-
-
       <ImageBackground source={img} style={{ height: '100%', width: '100%' }} resizeMode='stretch'>
       <View style={{marginLeft:'21%',marginTop:'9%'}} >
         <Text style={{fontSize:22, fontWeight:'bold', color:'#E36A30'}}>CalorieCrowd</Text>
@@ -207,14 +178,11 @@ console.log("item calorie................",item.calorie);
                     <Text>Calorie: {item.calorie}</Text>
                     <Text>Protein: {item.protein}</Text>
                     <Text>Net Carb: {item.netCarb}</Text>
-                    {/* Add more information or components as needed */}
                   </View>
                 </TouchableOpacity>
               )}
             />
           )}
-
-   
         </View>
       </ImageBackground>
     </View>

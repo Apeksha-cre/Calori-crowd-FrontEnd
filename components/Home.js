@@ -149,7 +149,6 @@ const Home  = ({route,navigation}) => {
           fill={lightorange}
         >
           {`${calorieConsumed} / ${goalCalorie}`}
-          
         </SvgText>
 
         <SvgText
@@ -161,6 +160,7 @@ const Home  = ({route,navigation}) => {
       >
         Calories
       </SvgText>
+
       </Svg>
 
     </View>
@@ -202,6 +202,7 @@ const Home  = ({route,navigation}) => {
         >
           {`${proteinConsumed} / ${goalProtein}`}
         </SvgText>
+
         <SvgText
         x={chartRadius-40}
         y={chartRadius-15} // Adjust the Y-coordinate to position it below
@@ -212,6 +213,7 @@ const Home  = ({route,navigation}) => {
       >
         Protein
       </SvgText>
+
       </Svg>
 
     <View style={{paddingLeft:'13%'}}>
